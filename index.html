@@ -2,54 +2,52 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NOOYAH · Maletas de Bicicleta — Brochure Comercial</title>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     html, body {
       background: #0a0a0a;
       font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-      /* scroll natural en la página principal */
       overflow-x: hidden;
     }
-
-    /* El iframe ocupa el 100% del viewport y crece con el contenido */
-    #brochure-wrap {
+    #brochure-outer {
       width: 100%;
-      /* Altura inicial = viewport; JS la ajusta al contenido real */
-      height: 100vh;
       overflow: hidden;
+      /* altura se calcula en JS */
     }
     #brochure-frame {
-      width: 100%;
-      height: 100%;
+      /* ancho fijo del diseño original del brochure */
+      width: 1200px;
+      height: 100vh;
       border: none;
       display: block;
+      transform-origin: top left;
+      /* transform se aplica via JS */
     }
 
     /* Sección videos */
     #videos {
       background: #0a0a0a;
-      padding: 64px 24px 80px;
+      padding: 56px 24px 72px;
       border-top: 1px solid #1a1a1a;
     }
     #videos h2 {
       color: #fff;
-      font-size: clamp(18px, 5vw, 28px);
+      font-size: clamp(18px, 5vw, 26px);
       font-weight: 800;
       letter-spacing: 4px;
       text-transform: uppercase;
       text-align: center;
       margin-bottom: 8px;
     }
-    #videos .sub {
+    .sub {
       color: #555;
       font-size: 11px;
       letter-spacing: 3px;
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
     .vgrid {
       display: grid;
@@ -58,9 +56,7 @@
       max-width: 960px;
       margin: 0 auto;
     }
-    @media (max-width: 600px) {
-      .vgrid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 600px) { .vgrid { grid-template-columns: 1fr; } }
     .vitem video {
       width: 100%;
       border-radius: 6px;
@@ -81,9 +77,9 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       text-align: center;
-      margin-top: 48px;
-      border-top: 1px solid #141414;
+      margin-top: 40px;
       padding-top: 24px;
+      border-top: 1px solid #141414;
       max-width: 960px;
       margin-left: auto;
       margin-right: auto;
@@ -92,11 +88,11 @@
 </head>
 <body>
 
-  <div id="brochure-wrap">
+  <div id="brochure-outer">
     <iframe
       id="brochure-frame"
       src="brochure.html"
-      scrolling="yes"
+      scrolling="no"
       title="NOOYAH Brochure Comercial"
     ></iframe>
   </div>
@@ -122,29 +118,35 @@
   </section>
 
   <script>
-    // Ajustar altura del iframe al contenido real del brochure
-    // Esto evita el doble scroll y el zoom raro en móvil
+    var BROCHURE_WIDTH = 1200; // ancho original del diseño
     var frame = document.getElementById('brochure-frame');
-    var wrap  = document.getElementById('brochure-wrap');
+    var outer = document.getElementById('brochure-outer');
 
-    function resizeFrame() {
+    function scaleFrame() {
+      var vw = window.innerWidth;
+      var scale = vw / BROCHURE_WIDTH;
+      frame.style.transform = 'scale(' + scale + ')';
+      frame.style.transformOrigin = 'top left';
+
+      // Ajustar altura del brochure escalado
+      var frameH = 0;
       try {
-        var h = frame.contentDocument.documentElement.scrollHeight;
-        if (h && h > 200) {
-          wrap.style.height = h + 'px';
-          frame.style.height = h + 'px';
-        }
-      } catch(e) {}
+        var innerH = frame.contentDocument.documentElement.scrollHeight;
+        frameH = innerH > 200 ? innerH : window.innerHeight;
+      } catch(e) {
+        frameH = window.innerHeight;
+      }
+      frame.style.height = frameH + 'px';
+      outer.style.height = (frameH * scale) + 'px';
     }
 
     frame.addEventListener('load', function() {
-      // Esperar un tick para que el bundler termine de renderizar
-      setTimeout(resizeFrame, 800);
-      setTimeout(resizeFrame, 2000); // segundo intento por si el bundle tarda
+      setTimeout(scaleFrame, 600);
+      setTimeout(scaleFrame, 1800);
     });
 
-    // Resize del viewport
-    window.addEventListener('resize', resizeFrame);
+    window.addEventListener('resize', scaleFrame);
+    scaleFrame(); // llamada inicial
   </script>
 
 </body>
