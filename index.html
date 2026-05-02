@@ -11,29 +11,25 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
       overflow-x: hidden;
     }
-
-    /* Iframe ocupa 100% del ancho y crece con el contenido */
     #brochure-outer {
       width: 100%;
+      overflow: hidden;
     }
     #brochure-frame {
-      width: 100%;
+      width: 1200px;
+      height: 100vh;
       border: none;
       display: block;
-      /* altura se calcula en JS */
-      height: 100vh;
+      transform-origin: top left;
     }
-
-    /* Videos — 100% del ancho disponible */
     #videos {
-      width: 100%;
       background: #0a0a0a;
       padding: 56px 24px 72px;
       border-top: 1px solid #1a1a1a;
     }
     #videos h2 {
       color: #fff;
-      font-size: clamp(16px, 4vw, 26px);
+      font-size: clamp(18px, 5vw, 26px);
       font-weight: 800;
       letter-spacing: 4px;
       text-transform: uppercase;
@@ -43,7 +39,7 @@
     .sub {
       color: #555;
       font-size: 11px;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       text-transform: uppercase;
       text-align: center;
       margin-bottom: 36px;
@@ -51,12 +47,11 @@
     .vgrid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      width: 100%;
-      max-width: 900px;
+      gap: 20px;
+      max-width: 960px;
       margin: 0 auto;
     }
-    @media (max-width: 580px) {
+    @media (max-width: 600px) {
       .vgrid { grid-template-columns: 1fr; }
       #videos { padding: 40px 16px 56px; }
     }
@@ -66,13 +61,22 @@
       background: #111;
       display: block;
     }
-    .vitem p {
+    .vitem .model {
+      color: #e11a1a;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .vitem .desc {
       color: #444;
       font-size: 10px;
       letter-spacing: 2px;
       text-transform: uppercase;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 4px;
     }
     .vfooter {
       color: #2a2a2a;
@@ -83,7 +87,7 @@
       margin-top: 40px;
       padding-top: 20px;
       border-top: 1px solid #141414;
-      max-width: 900px;
+      max-width: 960px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -108,39 +112,47 @@
         <video controls playsinline preload="metadata">
           <source src="demo1.mp4" type="video/mp4">
         </video>
-        <p>Demo 1 &middot; Instalación y uso</p>
+        <p class="model">BK004S</p>
+        <p class="desc">Demo · Instalación y uso</p>
       </div>
       <div class="vitem">
         <video controls playsinline preload="metadata">
           <source src="demo2.mp4" type="video/mp4">
         </video>
-        <p>Demo 2 &middot; Características y capacidad</p>
+        <p class="model">BK002</p>
+        <p class="desc">Demo · Instalación y uso</p>
       </div>
     </div>
     <p class="vfooter">NOOYAH &middot; Brochure Comercial Chile 2026</p>
   </section>
 
   <script>
+    var BROCHURE_WIDTH = 1200;
     var frame = document.getElementById('brochure-frame');
     var outer = document.getElementById('brochure-outer');
 
-    function resizeFrame() {
+    function scaleFrame() {
+      var vw = window.innerWidth;
+      var scale = vw / BROCHURE_WIDTH;
+      frame.style.transform = 'scale(' + scale + ')';
+      frame.style.transformOrigin = 'top left';
+      var frameH = 0;
       try {
-        var doc = frame.contentDocument || frame.contentWindow.document;
-        var h = doc.documentElement.scrollHeight || doc.body.scrollHeight;
-        if (h > 200) {
-          frame.style.height = h + 'px';
-          outer.style.height = h + 'px';
-        }
-      } catch(e) {}
+        var innerH = frame.contentDocument.documentElement.scrollHeight;
+        frameH = innerH > 200 ? innerH : window.innerHeight;
+      } catch(e) {
+        frameH = window.innerHeight;
+      }
+      frame.style.height = frameH + 'px';
+      outer.style.height = (frameH * scale) + 'px';
     }
 
     frame.addEventListener('load', function() {
-      setTimeout(resizeFrame, 700);
-      setTimeout(resizeFrame, 2000);
-      setTimeout(resizeFrame, 4000);
+      setTimeout(scaleFrame, 600);
+      setTimeout(scaleFrame, 1800);
     });
-    window.addEventListener('resize', resizeFrame);
+    window.addEventListener('resize', scaleFrame);
+    scaleFrame();
   </script>
 
 </body>
