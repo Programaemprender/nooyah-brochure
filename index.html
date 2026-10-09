@@ -91,6 +91,80 @@
       margin-left: auto;
       margin-right: auto;
     }
+    #testimonios {
+      background: #0a0a0a;
+      padding: 56px 24px 72px;
+      border-top: 1px solid #1a1a1a;
+    }
+    #testimonios h2 {
+      color: #fff;
+      font-size: clamp(18px, 5vw, 26px);
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .tcard {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #111;
+      border: 1px solid #1c1c1c;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .tphotos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .tphotos img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: block;
+      background: #0a0a0a;
+    }
+    .tquote {
+      color: #ddd;
+      font-size: 16px;
+      line-height: 1.65;
+      padding: 26px 30px 6px;
+      text-align: center;
+      font-style: italic;
+    }
+    .tcap {
+      text-align: center;
+      padding: 12px 30px 28px;
+    }
+    .tname {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .tmeta {
+      color: #e11a1a;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .tnote {
+      max-width: 860px;
+      margin: 22px auto 0;
+      color: #666;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .tphotos { grid-template-columns: 1fr; }
+      .tphotos img { height: 300px; }
+      #testimonios { padding: 40px 16px 56px; }
+    }
   </style>
 </head>
 <body>
@@ -124,6 +198,25 @@
       </div>
     </div>
     <p class="vfooter">NOOYAH &middot; Brochure Comercial Chile 2026</p>
+  </section>
+
+  <section id="testimonios">
+    <h2>Testimonios</h2>
+    <p class="sub">Clientes reales &middot; NOOYAH en ruta</p>
+    <figure class="tcard">
+      <div class="tphotos">
+        <img src="testimonio_bk004s_marco_maleta.jpg" alt="Maleta rígida NOOYAH BK004S lista para viajar">
+        <img src="testimonio_bk004s_marco_bici.jpg" alt="Bicicleta talla 56 en la maleta NOOYAH BK004S, sin desmontar el manubrio">
+      </div>
+      <blockquote class="tquote">
+        &ldquo;Viajamos a Buenos Aires con mi bici en la BK004S. Es talla 56 y entraba justa, así que solo saqué el sillín por seguridad. Llegó intacta, funcionó perfecto y fue súper fácil de usar.&rdquo;
+      </blockquote>
+      <figcaption class="tcap">
+        <div class="tname">Marco Nuñez</div>
+        <div class="tmeta">BK004S &middot; Santiago &rarr; Buenos Aires</div>
+      </figcaption>
+    </figure>
+    <p class="tnote">La BK004S permite viajar sin desmontar el manubrio, incluso con el cableado del freno hidráulico por dentro del manillar.</p>
   </section>
 
   <script>
